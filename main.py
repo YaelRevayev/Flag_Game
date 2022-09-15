@@ -5,7 +5,7 @@ x=consts.square_width
 y=consts.square_length
 def scatter_images():
 
-    gameDisplay.blit(carImg, (x, y))
+    #gameDisplay.blit(carImg, (x, y))
     pass
     #initialize player
 
@@ -33,7 +33,8 @@ screen.fill((0, 255, 0))
 
 running = True
 while running:
-
+    picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier.png'), (x*2, y*4))
+    screen.blit(picture, (0, 0))
     # Did the user click the window close button?
     for event in pygame.event.get():
         # Did the user hit a key?
