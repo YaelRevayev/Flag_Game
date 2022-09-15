@@ -4,6 +4,12 @@ SOLDIER_LENGTH=4
 FLAG_WIDTH=4
 FLAG_LENGTH=3
 
-SCREEN_WIDTH=
-SCRENN_LENGTH=
+SCREEN_WIDTH=800
+SCRENN_LENGTH=600
+
+#consts to display images
+square_width=800/50
+square_length=600/25
+
+
 

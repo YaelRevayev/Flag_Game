@@ -1,8 +1,12 @@
 import pygame
+import consts
 
-
-
+x=consts.square_width
+y=consts.square_length
 def scatter_images():
+
+    gameDisplay.blit(carImg, (x, y))
+    pass
     #initialize player
 
     #initialize flag
@@ -37,11 +41,11 @@ while running:
             # Was it the Escape key? If so, stop the loop.
             if event.key == K_ESCAPE:
                 # Create a surface and pass in a tuple containing its length and width
-                surf = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+                surf = pygame.Surface((10, 10))
                 # Give the surface a color to separate it from the background
                 surf.fill((0, 0, 0))
                 rect = surf.get_rect()
-                screen.blit(surf, (0 , 0))
+                screen.blit(surf, (x*25 , y*10))
                 pygame.display.flip()
 
                 #show mokshim screen
