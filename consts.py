@@ -7,11 +7,17 @@ FLAG_LENGTH=3
 SCREEN_WIDTH=1000
 SCREEN_LENGTH=500
 
+ROWS_MATRIX=25
+COLUMNS_MATRIX=50
+
 #consts to display images
 square_width=SCREEN_WIDTH//50
 square_length=SCREEN_LENGTH//25
 
 LIME_GREEN=(0,255,0)
 BLACK=(0,0,0)
+LEFT_CORNER_FLAG=(46*square_width,21*square_length)
+FLAG_LENGTH=3
+FLAG_WIDTH=4
 
 

@@ -3,7 +3,7 @@ import consts
 import random
 from time import time,sleep
 from pygame.locals import *
-import sys
+from GridMatrix import GridMatrix
 
 x=consts.square_width
 y=consts.square_length
@@ -29,38 +29,65 @@ def scatter_images():
 
 def normal_screen(x_ind=x,y_ind=y):
     pygame.init()
-    # Define constants for the screen width and height
     pygame.display.set_caption('The Flag')
     screen.fill((34, 139, 34))
+    scatter_images()
     text_objects()
+    picture = pygame.transform.scale(pygame.image.load('pics_essential/flag.png'), (x * 4, y * 3))
+    screen.blit(picture, consts.LEFT_CORNER_FLAG)
     picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier.png'), (x * 2, y * 4))
     screen.blit(picture, (0, 0))
-    scatter_images()
+
     pygame.display.flip()
 
 
 def display_hidden_matrix():
-
     hidden_surface = pygame.Surface((1000, 500))
     hidden_surface.fill(consts.BLACK)
-    blockSize = 20  # Set the size of the grid block
     for x in range(0, consts.SCREEN_WIDTH, int(consts.square_width)):
         for y in range(0, consts.SCREEN_LENGTH, int(consts.square_length)):
             rect = pygame.Rect(x, y, int(consts.square_width), int(consts.square_length))
             pygame.draw.rect(hidden_surface, consts.LIME_GREEN, rect, 1)
-    return hidden_surface
 
 
+    screen.blit(hidden_surface, (0, 0))
+    picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier_nigth.png'),
+                                     (consts.square_width * 2, consts.square_length * 4))
+    screen.blit(picture, (0, 0))
+    scan_for_traps()
+    pygame.display.flip()
+
+
+#example essential to display trap
+def scan_for_traps():
+    # scan grid matrix
+    for i in range(len(grid_matrix)):
+        j = 0
+        while j < (consts.COLUMNS_MATRIX - 3):
+            if grid_matrix[i][j] == "trap":
+                show_trap_dark_mode(i, j)
+                j += 3
+            else:
+                j += 1
+
+def show_trap_dark_mode(i, j):
+        #gets coordinate of first out of free squares trap
+        #example:
+        # (2,4)(2,5)(2,6) == trap in matrix
+        # display_hidden_matrix(2,4)
+    picture = pygame.transform.scale(pygame.image.load('pics_essential/mine.png'),
+                                         (consts.square_width *3, consts.square_length * 1))
+    screen.blit(picture, (consts.square_width * j, consts.square_length * i))
+        #pygame.display.flip()
+
+grid_matrix= GridMatrix().get_matrix()
 normal_screen()
 running = True
 while running:
-    # Did the user click the window close button?
     for event in pygame.event.get():
-        # Did the user hit a key?
         if event.type == KEYDOWN:
             if event.key == pygame.K_RETURN:
-                    screen.blit(display_hidden_matrix(), (0, 0))
-                    pygame.display.flip()
+                    display_hidden_matrix()
                     sleep(1 - time() % 1)
                     normal_screen()
                     pygame.display.flip()
@@ -73,7 +100,6 @@ while running:
 
     # Flip the display
     pygame.display.flip()
-
 
 pygame.quit()
 
