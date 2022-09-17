@@ -15,11 +15,11 @@ def text_objects():
     pygame.font.init()
     font = pygame.font.SysFont('freesansbold.ttf',25,True,False)
     textSurface = font.render("Welcome To the Flag Game! \n "
-                              " Have Fun ", False, (250, 250, 250))
+                              " Have Fun ", False, consts.WHITE)
     TextSurf, TextRect = textSurface, textSurface.get_rect()
     TextRect.center = (10*x,y)
     screen.blit(TextSurf, TextRect)
-    pygame.display.update()
+    pygame.display.flip()
 
 
 def scatter_images():
@@ -28,6 +28,7 @@ def scatter_images():
         rand_y = random.uniform(0, consts.SCREEN_LENGTH)
         picture = pygame.transform.scale(pygame.image.load('pics_essential/grass.png'), (x * 2, y * 2))
         screen.blit(picture, (rand_x, rand_y))
+    pygame.display.flip()
 
 
 def normal_screen(player,x_ind=x,y_ind=y):
@@ -39,17 +40,17 @@ def normal_screen(player,x_ind=x,y_ind=y):
     picture = pygame.transform.scale(pygame.image.load('pics_essential/flag.png'), (x * 4, y * 3))
     screen.blit(picture, consts.LEFT_CORNER_FLAG)
     display_soldair(player)
-    pygame.display.flip()
+    pygame.display.update()
 
 
 def display_soldair(player):
     picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier.png'), (x * 2, y * 4))
-    screen.blit(picture, (x*player.get_j_leftcorner(), y*player.get_i_leftcorner()))
-    #pygame.display.flip()
+    screen.blit(picture, (x*player.get_j_leftcorner(),y*player.get_i_leftcorner()))
+    pygame.display.update()
 
 
 def display_hidden_matrix(player):
-    hidden_surface = pygame.Surface((1000, 500))
+    hidden_surface = pygame.Surface((consts.SCREEN_WIDTH, consts.SCREEN_LENGTH))
     hidden_surface.fill(consts.BLACK)
     for x in range(0, consts.SCREEN_WIDTH, int(consts.square_width)):
         for y in range(0, consts.SCREEN_LENGTH, int(consts.square_length)):
@@ -57,14 +58,18 @@ def display_hidden_matrix(player):
             pygame.draw.rect(hidden_surface, consts.LIME_GREEN, rect, 1)
 
 
-    screen.blit(hidden_surface, (0, 0))
     picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier_nigth.png'),
                                      (consts.square_width * 2, consts.square_length * 4))
-    screen.blit(picture, (player.get_j_leftcorner()*consts.square_width,
+    hidden_surface.blit(picture, (player.get_j_leftcorner()*consts.square_width,
                           player.get_i_leftcorner()* consts.square_length))
+    screen.blit(hidden_surface, (0, 0))
     scan_for_traps()
     pygame.display.flip()
 
+    sleep(1 - time() % 1)
+    #empty = Color(0, 0, 0, 0)
+    #hidden_surface.fill(empty)
+    #screen.blit(hidden_surface, (0, 0))
 
 def scan_for_traps():
     # scan grid matrix
@@ -101,11 +106,11 @@ def handle_event(i_change=0,j_change=0):
 grid_matrix= GridMatrix().get_matrix()
 player=Player()
 normal_screen(player)
+display_soldair(player)
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-
             if event.key==pygame.K_DOWN:
                 handle_event(i_change=1)
 
@@ -120,9 +125,7 @@ while running:
 
             if event.key == pygame.K_RETURN:
                     display_hidden_matrix(player)
-                    sleep(1 - time() % 1)
                     normal_screen(player)
-
 
             if event.key == K_ESCAPE:
                 pygame.display.flip()

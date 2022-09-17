@@ -19,6 +19,10 @@ class Player():
     def set_j_leftcorner(self,num):
         self.col_index=num
 
+    def cald_legs_area(self):
+        list_body_tuples=calc_body_indexes(self.row_index,self.col_index)
+        return (list_body_tuples[len(list_body_tuples)-2]
+                ,list_body_tuples[len(list_body_tuples)-1])
 
 
 def calc_body_indexes(i_leftcorner,j_leftcorner):
@@ -35,5 +39,8 @@ def tuples_in_borders(list_of_tuples):
             elif tuple[1]>49 or tuple[1]<0:
                 return False
     return True
+
+
+
 
 
