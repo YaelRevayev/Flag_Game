@@ -4,11 +4,13 @@ import random
 from time import time,sleep
 from pygame.locals import *
 from GridMatrix import GridMatrix
+from Soldier import Player
+import Soldier
 
 x=consts.square_width
 y=consts.square_length
-
 screen = pygame.display.set_mode((consts.SCREEN_WIDTH, consts.SCREEN_LENGTH))
+
 def text_objects():
     pygame.font.init()
     font = pygame.font.SysFont('freesansbold.ttf',25,True,False)
@@ -19,6 +21,7 @@ def text_objects():
     screen.blit(TextSurf, TextRect)
     pygame.display.update()
 
+
 def scatter_images():
     for i in range(50):
         rand_x = random.uniform(0,consts.SCREEN_WIDTH)
@@ -27,7 +30,7 @@ def scatter_images():
         screen.blit(picture, (rand_x, rand_y))
 
 
-def normal_screen(x_ind=x,y_ind=y):
+def normal_screen(player,x_ind=x,y_ind=y):
     pygame.init()
     pygame.display.set_caption('The Flag')
     screen.fill((34, 139, 34))
@@ -35,13 +38,17 @@ def normal_screen(x_ind=x,y_ind=y):
     text_objects()
     picture = pygame.transform.scale(pygame.image.load('pics_essential/flag.png'), (x * 4, y * 3))
     screen.blit(picture, consts.LEFT_CORNER_FLAG)
-    picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier.png'), (x * 2, y * 4))
-    screen.blit(picture, (0, 0))
-
+    display_soldair(player)
     pygame.display.flip()
 
 
-def display_hidden_matrix():
+def display_soldair(player):
+    picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier.png'), (x * 2, y * 4))
+    screen.blit(picture, (x*player.get_j_leftcorner(), y*player.get_i_leftcorner()))
+    #pygame.display.flip()
+
+
+def display_hidden_matrix(player):
     hidden_surface = pygame.Surface((1000, 500))
     hidden_surface.fill(consts.BLACK)
     for x in range(0, consts.SCREEN_WIDTH, int(consts.square_width)):
@@ -53,12 +60,12 @@ def display_hidden_matrix():
     screen.blit(hidden_surface, (0, 0))
     picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier_nigth.png'),
                                      (consts.square_width * 2, consts.square_length * 4))
-    screen.blit(picture, (0, 0))
+    screen.blit(picture, (player.get_j_leftcorner()*consts.square_width,
+                          player.get_i_leftcorner()* consts.square_length))
     scan_for_traps()
     pygame.display.flip()
 
 
-#example essential to display trap
 def scan_for_traps():
     # scan grid matrix
     for i in range(len(grid_matrix)):
@@ -70,6 +77,7 @@ def scan_for_traps():
             else:
                 j += 1
 
+
 def show_trap_dark_mode(i, j):
         #gets coordinate of first out of free squares trap
         #example:
@@ -80,23 +88,47 @@ def show_trap_dark_mode(i, j):
     screen.blit(picture, (consts.square_width * j, consts.square_length * i))
         #pygame.display.flip()
 
+
+def handle_event(i_change=0,j_change=0):
+    list_o_tuples = Soldier.calc_body_indexes(player.get_i_leftcorner() + i_change,
+                                              player.get_j_leftcorner()+j_change)
+    if Soldier.tuples_in_borders(list_o_tuples):
+        player.set_i_leftcorner(player.get_i_leftcorner() + i_change)
+        player.set_j_leftcorner(player.get_j_leftcorner()+j_change)
+        normal_screen(player)
+
+# ------------------main screen event handling------------------
 grid_matrix= GridMatrix().get_matrix()
-normal_screen()
+player=Player()
+normal_screen(player)
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
+
+            if event.key==pygame.K_DOWN:
+                handle_event(i_change=1)
+
+            if event.key==pygame.K_UP:
+                handle_event(i_change=-1)
+
+            if event.key==pygame.K_LEFT:
+                handle_event(j_change=-1)
+
+            if event.key==pygame.K_RIGHT:
+                handle_event(j_change=1)
+
             if event.key == pygame.K_RETURN:
-                    display_hidden_matrix()
+                    display_hidden_matrix(player)
                     sleep(1 - time() % 1)
-                    normal_screen()
-                    pygame.display.flip()
+                    normal_screen(player)
+
+
             if event.key == K_ESCAPE:
                 pygame.display.flip()
 
         elif event.type == pygame.QUIT:
             running = False
-
 
     # Flip the display
     pygame.display.flip()

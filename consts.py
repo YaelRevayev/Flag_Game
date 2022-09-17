@@ -16,7 +16,9 @@ square_length=SCREEN_LENGTH//25
 
 LIME_GREEN=(34,139,34)
 BLACK=(0,0,0)
+
 LEFT_CORNER_FLAG=(46*square_width,21*square_length)
+
 FLAG_LENGTH=3
 FLAG_WIDTH=4
 
