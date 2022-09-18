@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((consts.SCREEN_WIDTH, consts.SCREEN_LENGTH))
 def text_objects():
     pygame.font.init()
     font = pygame.font.SysFont('freesansbold.ttf',25,True,False)
-    textSurface = font.render("Welcome To the Flag Game! \n "
+    textSurface = font.render("Welcome To the Flag Game! "
                               " Have Fun ", False, consts.WHITE)
     TextSurf, TextRect = textSurface, textSurface.get_rect()
     TextRect.center = (10*x,y)
@@ -115,6 +115,7 @@ player=Player()
 normal_screen(player)
 display_soldair(player)
 running = True
+
 while running:
     if player.check_touch_flag(grid_matrix):
         won_lost_text("You Won!")
