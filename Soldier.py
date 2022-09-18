@@ -25,8 +25,8 @@ class Player():
 
     def cald_legs_area(self):
         list_body_tuples=calc_body_indexes(self.row_index,self.col_index)
-        return (list_body_tuples[len(list_body_tuples)-2]
-                ,list_body_tuples[len(list_body_tuples)-1])
+        return list_body_tuples[len(list_body_tuples)-2] \
+                , list_body_tuples[len(list_body_tuples)-1]
 
     def check_touch_trap(self,grid_matrix):
         # מיתר

@@ -109,6 +109,12 @@ normal_screen(player)
 display_soldair(player)
 running = True
 while running:
+
+    # if player.check_touch_flag(grid_matrix):
+    # player won---> running=False
+    # if player.check_touch_trap(grid_matrix):
+    # player lost---> running=False
+
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key==pygame.K_DOWN:

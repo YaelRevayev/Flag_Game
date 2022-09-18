@@ -20,6 +20,7 @@ class GridMatrix:
         #מיתר
         #הפעולה מכניסה כ20 מוקשים בשורות המטריצה כל מוקש תופס שורה אחת ו3 עמודות
         # בשביל לגשת למטריצה תכתבי self.grid_matrix
+        # בערכים של המוקש במטריצה תכתבי "trap"
         pass
 
     def secdlist_tuples_traps_sequances(self,i_player,j_player):
