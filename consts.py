@@ -19,6 +19,7 @@ BLACK=(0,0,0)
 WHITE=(250,250,250)
 
 LEFT_CORNER_FLAG=(46*square_width,21*square_length)
+START_FLAG = [21, 46]
 
 FLAG_LENGTH=3
 FLAG_WIDTH=4

@@ -103,17 +103,20 @@ def handle_event(i_change=0,j_change=0):
         normal_screen(player)
 
 # ------------------main screen event handling------------------
-grid_matrix= GridMatrix().get_matrix()
+grid_object=GridMatrix()
+grid_matrix= grid_object.get_matrix()
+#try_grid=GridMatrix()
 player=Player()
 normal_screen(player)
 display_soldair(player)
 running = True
 while running:
+    #if player.check_touch_flag(grid_matrix):
+         #print("won")
 
-    # if player.check_touch_flag(grid_matrix):
     # player won---> running=False
-    # if player.check_touch_trap(grid_matrix):
-    # player lost---> running=False
+    if player.check_touch_trap(grid_object):
+        print("lost")
 
     for event in pygame.event.get():
         if event.type == KEYDOWN:
