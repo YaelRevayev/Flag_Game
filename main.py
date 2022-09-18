@@ -22,6 +22,16 @@ def text_objects():
     pygame.display.flip()
 
 
+def won_lost_text(txt):
+    pygame.font.init()
+    font = pygame.font.SysFont('freesansbold.ttf',30,True,False)
+    textSurface = font.render(txt, False, consts.WHITE)
+    TextSurf, TextRect = textSurface, textSurface.get_rect()
+    TextRect.center = (consts.SCREEN_WIDTH/2,consts.SCREEN_LENGTH/2)
+    screen.blit(TextSurf, TextRect)
+    pygame.display.flip()
+
+
 def scatter_images():
     for i in range(50):
         rand_x = random.uniform(0,consts.SCREEN_WIDTH)
@@ -57,7 +67,6 @@ def display_hidden_matrix(player):
             rect = pygame.Rect(x, y, int(consts.square_width), int(consts.square_length))
             pygame.draw.rect(hidden_surface, consts.LIME_GREEN, rect, 1)
 
-
     picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier_nigth.png'),
                                      (consts.square_width * 2, consts.square_length * 4))
     hidden_surface.blit(picture, (player.get_j_leftcorner()*consts.square_width,
@@ -65,11 +74,8 @@ def display_hidden_matrix(player):
     screen.blit(hidden_surface, (0, 0))
     scan_for_traps()
     pygame.display.flip()
-
     sleep(1 - time() % 1)
-    #empty = Color(0, 0, 0, 0)
-    #hidden_surface.fill(empty)
-    #screen.blit(hidden_surface, (0, 0))
+
 
 def scan_for_traps():
     # scan grid matrix
@@ -105,19 +111,21 @@ def handle_event(i_change=0,j_change=0):
 # ------------------main screen event handling------------------
 grid_object=GridMatrix()
 grid_matrix= grid_object.get_matrix()
-#try_grid=GridMatrix()
 player=Player()
 normal_screen(player)
 display_soldair(player)
 running = True
 while running:
-    #if player.check_touch_flag(grid_matrix):
-         #print("won")
+    if player.check_touch_flag(grid_matrix):
+        won_lost_text("You Won!")
+        sleep(3 - time() % 3)
+        running = False
 
     # player won---> running=False
     if player.check_touch_trap(grid_object):
-        print("lost")
-
+        won_lost_text("You Lost!")
+        sleep(3 - time() % 3)
+        running = False
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key==pygame.K_DOWN:
