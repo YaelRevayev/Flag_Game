@@ -11,6 +11,7 @@ ROWS_MATRIX=25
 COLUMNS_MATRIX=50
 
 #consts to display images
+#links matrix and screen
 square_width=SCREEN_WIDTH//50
 square_length=SCREEN_LENGTH//25
 

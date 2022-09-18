@@ -7,11 +7,12 @@ from GridMatrix import GridMatrix
 from Soldier import Player
 import Soldier
 
-x=consts.square_width
-y=consts.square_length
+x=consts.square_width  # wodth (in pixels) of one square in our matrix
+y=consts.square_length  # length (in pixels) of one square in our matrix
 screen = pygame.display.set_mode((consts.SCREEN_WIDTH, consts.SCREEN_LENGTH))
 
 def text_objects():
+    #displays on screen welcome text when function is called
     pygame.font.init()
     font = pygame.font.SysFont('freesansbold.ttf',25,True,False)
     textSurface = font.render("Welcome To the Flag Game! "
@@ -23,16 +24,19 @@ def text_objects():
 
 
 def won_lost_text(txt):
+    # displays txt-string paramter on the center
+    # of the screen when functions is called
     pygame.font.init()
     font = pygame.font.SysFont('freesansbold.ttf',30,True,False)
     textSurface = font.render(txt, False, consts.WHITE)
     TextSurf, TextRect = textSurface, textSurface.get_rect()
     TextRect.center = (consts.SCREEN_WIDTH/2,consts.SCREEN_LENGTH/2)
-    screen.blit(TextSurf, TextRect)
+    screen.blit(TextSurf, TextRect)  # put the object on screen and updates
     pygame.display.flip()
 
 
 def scatter_images():
+    # displays random grass objects on screen when called
     for i in range(50):
         rand_x = random.uniform(0,consts.SCREEN_WIDTH)
         rand_y = random.uniform(0, consts.SCREEN_LENGTH)
@@ -42,6 +46,8 @@ def scatter_images():
 
 
 def normal_screen(player,x_ind=x,y_ind=y):
+    # displays welcome text + garss images + soldier
+    # at his recent position in matrix
     pygame.init()
     pygame.display.set_caption('The Flag')
     screen.fill((34, 139, 34))
@@ -54,14 +60,17 @@ def normal_screen(player,x_ind=x,y_ind=y):
 
 
 def display_soldair(player):
+    # using features of the player object to display the image on the screen
     picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier.png'), (x * 2, y * 4))
     screen.blit(picture, (x*player.get_j_leftcorner(),y*player.get_i_leftcorner()))
     pygame.display.update()
 
 
 def display_hidden_matrix(player):
+    # shows a surface of dark matrix screen with traps
     hidden_surface = pygame.Surface((consts.SCREEN_WIDTH, consts.SCREEN_LENGTH))
     hidden_surface.fill(consts.BLACK)
+
     for x in range(0, consts.SCREEN_WIDTH, int(consts.square_width)):
         for y in range(0, consts.SCREEN_LENGTH, int(consts.square_length)):
             rect = pygame.Rect(x, y, int(consts.square_width), int(consts.square_length))
@@ -78,7 +87,8 @@ def display_hidden_matrix(player):
 
 
 def scan_for_traps():
-    # scan grid matrix
+    # scans grid matrix for the first square of each trap
+    # (one trap takes 3 squares in matrix)
     for i in range(len(grid_matrix)):
         j = 0
         while j < (consts.COLUMNS_MATRIX - 3):
@@ -97,12 +107,16 @@ def show_trap_dark_mode(i, j):
     picture = pygame.transform.scale(pygame.image.load('pics_essential/mine.png'),
                                          (consts.square_width *3, consts.square_length * 1))
     screen.blit(picture, (consts.square_width * j, consts.square_length * i))
-        #pygame.display.flip()
+
 
 
 def handle_event(i_change=0,j_change=0):
+    # functions is called whenever player presses keys on keyboard
+    # parameters are the changes that are wanted to be
+    # applied to player's current location
     list_o_tuples = Soldier.calc_body_indexes(player.get_i_leftcorner() + i_change,
                                               player.get_j_leftcorner()+j_change)
+
     if Soldier.tuples_in_borders(list_o_tuples):
         player.set_i_leftcorner(player.get_i_leftcorner() + i_change)
         player.set_j_leftcorner(player.get_j_leftcorner()+j_change)
@@ -116,6 +130,7 @@ normal_screen(player)
 display_soldair(player)
 running = True
 
+# this loop is active as long as player didnt win / lose , or exited the screen
 while running:
     if player.check_touch_flag(grid_matrix):
         won_lost_text("You Won!")
