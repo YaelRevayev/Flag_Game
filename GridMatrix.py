@@ -16,7 +16,7 @@ class GridMatrix:
          # gets parallel matrix and inserts grass randomly
          for i in range(30):
              rand_j = random.randint(6,consts.COLUMNS_MATRIX-3)
-             rand_i = random.randint(0,consts.ROWS_MATRIX)
+             rand_i = random.randint(0,consts.ROWS_MATRIX-3)
              self.grid_matrix[rand_i][rand_j] = "grass"
 
     def get_matrix(self):

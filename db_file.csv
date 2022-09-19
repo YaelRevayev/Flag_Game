@@ -1,11 +1,13 @@
 game_state_id,player,parallel_grass_grid,trap_grid
-0,empty,empty,empty
-1,empty,empty,empty
-2,<Soldier.Player object at 0x000002AEE69F3FD0>,<GridMatrix.GridMatrix object at 0x000002AEF6D891E0>,<GridMatrix.GridMatrix object at 0x000002AEF84F6E30>
-3,empty,empty,empty
-4,empty,empty,empty
-5,empty,empty,empty
-6,empty,empty,empty
-7,empty,empty,empty
-8,empty,empty,empty
-9,empty,empty,empty
+0.0,empty,empty,empty
+1.0,<Soldier.Player object at 0x00000211B8844D90>,<GridMatrix.GridMatrix object at 0x00000211B8844DF0>,<GridMatrix.GridMatrix object at 0x00000211CA6CD600>
+2.0,<Soldier.Player object at 0x00000230D83D4D90>,<GridMatrix.GridMatrix object at 0x00000230D83D4DF0>,<GridMatrix.GridMatrix object at 0x00000230EA289630>
+3.0,<Soldier.Player object at 0x00000266E15A4D90>,<GridMatrix.GridMatrix object at 0x00000266E15A4DF0>,<GridMatrix.GridMatrix object at 0x00000266F34116C0>
+4.0,<Soldier.Player object at 0x000001791B664E20>,<GridMatrix.GridMatrix object at 0x000001791B664E80>,<GridMatrix.GridMatrix object at 0x000001792D4E9150>
+5.0,empty,empty,empty
+6.0,<Soldier.Player object at 0x000001791B664E20>,<GridMatrix.GridMatrix object at 0x000001791B664E80>,<GridMatrix.GridMatrix object at 0x000001792D4E9150>
+7.0,empty,empty,empty
+8.0,<Soldier.Player object at 0x0000022418424D90>,<GridMatrix.GridMatrix object at 0x0000022418424DF0>,<GridMatrix.GridMatrix object at 0x000002242A2B9600>
+9.0,empty,empty,empty
+,<Soldier.Player object at 0x0000020B16DFB010>,<GridMatrix.GridMatrix object at 0x0000020B06754E20>,<GridMatrix.GridMatrix object at 0x0000020B1845A4D0>
+,<Soldier.Player object at 0x00000280C6316110>,<GridMatrix.GridMatrix object at 0x00000280B789D8D0>,<GridMatrix.GridMatrix object at 0x00000280B7AEE8F0>

@@ -6,7 +6,8 @@ from GridMatrix import GridMatrix
 from Soldier import Player
 import Soldier
 import keyboard
-
+import DateBase
+import ctypes
 x=consts.square_width  # wodth (in pixels) of one square in our matrix
 y=consts.square_length  # length (in pixels) of one square in our matrix
 screen = pygame.display.set_mode((consts.SCREEN_WIDTH, consts.SCREEN_LENGTH))
@@ -123,6 +124,31 @@ def handle_event(i_change=0,j_change=0):
         player.set_j_leftcorner(player.get_j_leftcorner()+j_change)
         normal_screen(player)
 
+
+def memoryad_to_object(hex_ad):
+    return ctypes.cast(hex_ad, ctypes.py_object).value
+
+def handle_digit_duration_key(key_pressed,duration_inseconds):
+    def substring_after(s, delim):
+        return s.partition(delim)[2]
+
+    global player
+    global helpful_grid_grass
+    global grid_object
+
+    if duration_inseconds <= 1:
+       DateBase.update_index(int(key_pressed),player,helpful_grid_grass,grid_object)
+    elif duration_inseconds > 1:
+
+         key_pressed=int(key_pressed)
+         hex_object_adress=substring_after(DateBase.read_to_display(key_pressed)[0],"at ")
+         if "empty" not in DateBase.read_to_display(key_pressed):
+            player = memoryad_to_object(hex_object_adress)
+            hex_object_adres1 = substring_after(DateBase.read_to_display(key_pressed)[1], "at ")
+            helpful_grid_grass = memoryad_to_object(hex_object_adres1)
+            hex_object_adres2 = substring_after(DateBase.read_to_display(key_pressed)[2], "at ")
+            grid_object = memoryad_to_object(hex_object_adres2)
+
 # ------------------main screen event handling------------------
 grid_object=GridMatrix()
 grid_object.insert_random_traps()
@@ -143,22 +169,25 @@ while running:
         sleep(3 - time() % 3)
         running = False
 
-    # player won---> running=False
+    # player Lost---> running=False
     if player.check_touch_trap(grid_object):
         won_lost_text("You Lost!")
         sleep(3 - time() % 3)
         running = False
 
     for event in pygame.event.get():
+
         if event.type == KEYDOWN:
 
-            t = time()
-            digit_pessed=False
-            while pygame.K_KP0 <= event.key <= pygame.K_KP9:
-                digit_pessed=True
-            if digit_pessed:
-                #handle_digit_duration_key(time()-t)
-                pass
+            t = time() #the time at that moment when line is executed
+            digit_pressed = False
+            while not keyboard.read_event().event_type == "up" and event.unicode.isdigit():
+                digit_pressed = True
+
+
+            if digit_pressed is True:
+                handle_digit_duration_key(event.unicode,(time()-t))
+                normal_screen(player)
 
 
             if event.key==pygame.K_DOWN:

@@ -50,13 +50,10 @@ def read_to_display(key_num):
     for index, row in record_of_state.iterrows():
         for column in columns_list:
             list_of_returned_objects.append(row[column])
-    print(list_of_returned_objects)
+    return list_of_returned_objects
 
+print(read_to_display(4))
 
-#call meitar func
-update_index(2,Player(),GridMatrix(),GridMatrix())
-print(create_file())
-read_to_display(2)
 
 
 
