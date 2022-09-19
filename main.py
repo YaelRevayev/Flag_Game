@@ -35,13 +35,14 @@ def won_lost_text(txt):
     pygame.display.flip()
 
 
-def scatter_images():
+def scatter_grass():
     # displays random grass objects on screen when called
-    for i in range(50):
-        rand_x = random.uniform(0,consts.SCREEN_WIDTH)
-        rand_y = random.uniform(0, consts.SCREEN_LENGTH)
-        picture = pygame.transform.scale(pygame.image.load('pics_essential/grass.png'), (x * 2, y * 2))
-        screen.blit(picture, (rand_x, rand_y))
+    parallel_grass_grid=helpful_grid_grass.get_matrix()
+    for i in range(len(parallel_grass_grid)):
+        for j in range(len(parallel_grass_grid[i])):
+            if parallel_grass_grid[i][j]=="grass":
+                picture = pygame.transform.scale(pygame.image.load('pics_essential/grass.png'), (x * 2, y * 2))
+                screen.blit(picture, (j*x, i*y))
     pygame.display.flip()
 
 
@@ -51,7 +52,7 @@ def normal_screen(player,x_ind=x,y_ind=y):
     pygame.init()
     pygame.display.set_caption('The Flag')
     screen.fill((34, 139, 34))
-    scatter_images()
+    scatter_grass()
     text_objects()
     picture = pygame.transform.scale(pygame.image.load('pics_essential/flag.png'), (x * 4, y * 3))
     screen.blit(picture, consts.LEFT_CORNER_FLAG)
@@ -124,7 +125,12 @@ def handle_event(i_change=0,j_change=0):
 
 # ------------------main screen event handling------------------
 grid_object=GridMatrix()
+grid_object.insert_random_traps()
 grid_matrix= grid_object.get_matrix()
+
+helpful_grid_grass=GridMatrix()
+helpful_grid_grass.scatter_grass_parallel_matrix()
+
 player=Player()
 normal_screen(player)
 display_soldair(player)

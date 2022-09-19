@@ -11,7 +11,13 @@ class GridMatrix:
                 inner_list.append("free")
             self.grid_matrix.append(inner_list)
 
-        self.insert_random_traps()
+
+    def scatter_grass_parallel_matrix(self):
+         # gets parallel matrix and inserts grass randomly
+         for i in range(30):
+             rand_j = random.randint(6,consts.COLUMNS_MATRIX-3)
+             rand_i = random.randint(0,consts.ROWS_MATRIX)
+             self.grid_matrix[rand_i][rand_j] = "grass"
 
     def get_matrix(self):
         return self.grid_matrix
