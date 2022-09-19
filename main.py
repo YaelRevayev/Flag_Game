@@ -1,11 +1,11 @@
 import pygame
 import consts
-import random
 from time import time,sleep
 from pygame.locals import *
 from GridMatrix import GridMatrix
 from Soldier import Player
 import Soldier
+import keyboard
 
 x=consts.square_width  # wodth (in pixels) of one square in our matrix
 y=consts.square_length  # length (in pixels) of one square in our matrix
@@ -148,8 +148,19 @@ while running:
         won_lost_text("You Lost!")
         sleep(3 - time() % 3)
         running = False
+
     for event in pygame.event.get():
         if event.type == KEYDOWN:
+
+            t = time()
+            digit_pessed=False
+            while pygame.K_KP0 <= event.key <= pygame.K_KP9:
+                digit_pessed=True
+            if digit_pessed:
+                #handle_digit_duration_key(time()-t)
+                pass
+
+
             if event.key==pygame.K_DOWN:
                 handle_event(i_change=1)
 
