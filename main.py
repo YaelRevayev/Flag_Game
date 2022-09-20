@@ -7,7 +7,10 @@ from Soldier import Player
 import Soldier
 import keyboard
 import DateBase
+import  ast
 import ctypes
+
+
 x=consts.square_width  # wodth (in pixels) of one square in our matrix
 y=consts.square_length  # length (in pixels) of one square in our matrix
 screen = pygame.display.set_mode((consts.SCREEN_WIDTH, consts.SCREEN_LENGTH))
@@ -64,6 +67,7 @@ def normal_screen(player,x_ind=x,y_ind=y):
 def display_soldair(player):
     # using features of the player object to display the image on the screen
     picture = pygame.transform.scale(pygame.image.load('pics_essential/soldier.png'), (x * 2, y * 4))
+    print(player.get_i_leftcorner(),player.get_j_leftcorner())
     screen.blit(picture, (x*player.get_j_leftcorner(),y*player.get_i_leftcorner()))
     pygame.display.update()
 
@@ -129,25 +133,28 @@ def memoryad_to_object(hex_ad):
     return ctypes.cast(hex_ad, ctypes.py_object).value
 
 def handle_digit_duration_key(key_pressed,duration_inseconds):
-    def substring_after(s, delim):
-        return s.partition(delim)[2]
-
+    #error ---> objects id's that are saved in db are weak references
+    # turn to strong references by adding another pointer somehow
     global player
     global helpful_grid_grass
     global grid_object
+    global grid_matrix
 
     if duration_inseconds <= 1:
-       DateBase.update_index(int(key_pressed),player,helpful_grid_grass,grid_object)
-    elif duration_inseconds > 1:
+       tuple_alt=player.get_i_leftcorner(), player.get_j_leftcorner() #(1,2)
+       grass_2d_alt=helpful_grid_grass.get_grid_matrix()
+       mines_2d_alt=grid_object.get_grid_matrix()
+       DateBase.update_index(int(key_pressed),tuple_alt,grass_2d_alt,mines_2d_alt)
 
-         key_pressed=int(key_pressed)
-         hex_object_adress=substring_after(DateBase.read_to_display(key_pressed)[0],"at ")
-         if "empty" not in DateBase.read_to_display(key_pressed):
-            player = memoryad_to_object(hex_object_adress)
-            hex_object_adres1 = substring_after(DateBase.read_to_display(key_pressed)[1], "at ")
-            helpful_grid_grass = memoryad_to_object(hex_object_adres1)
-            hex_object_adres2 = substring_after(DateBase.read_to_display(key_pressed)[2], "at ")
-            grid_object = memoryad_to_object(hex_object_adres2)
+
+    elif duration_inseconds > 1:
+        if "empty" not in DateBase.read_to_display(key_pressed):
+            player.set_i_leftcorner(tuple(DateBase.read_to_display(int(key_pressed))[0])[0])
+            player.set_j_leftcorner(tuple(DateBase.read_to_display(int(key_pressed))[0])[1])
+            print(player)
+            helpful_grid_grass.set_grid_matrix(ast.literal_eval(DateBase.read_to_display(int(key_pressed))[1]))
+            grid_object.set_grid_matrix(ast.literal_eval(DateBase.read_to_display(int(key_pressed))[2]))
+
 
 # ------------------main screen event handling------------------
 grid_object=GridMatrix()
@@ -159,11 +166,12 @@ helpful_grid_grass.scatter_grass_parallel_matrix()
 
 player=Player()
 normal_screen(player)
-display_soldair(player)
+#display_soldair(player)
 running = True
 
 # this loop is active as long as player didnt win / lose , or exited the screen
 while running:
+    #normal_screen(player)
     if player.check_touch_flag(grid_matrix):
         won_lost_text("You Won!")
         sleep(3 - time() % 3)
@@ -176,17 +184,22 @@ while running:
         running = False
 
     for event in pygame.event.get():
-
         if event.type == KEYDOWN:
 
             t = time() #the time at that moment when line is executed
+            flag_start_timer=True
             digit_pressed = False
             while not keyboard.read_event().event_type == "up" and event.unicode.isdigit():
+                if flag_start_timer:
+                    t = time()
+                    flag_start_timer=False
                 digit_pressed = True
 
 
             if digit_pressed is True:
-                handle_digit_duration_key(event.unicode,(time()-t))
+                print("press duration: ",time()-t)
+                handle_digit_duration_key(event.unicode,time()-t)
+                print("location updated: ",player.get_i_leftcorner(),player.get_j_leftcorner())
                 normal_screen(player)
 
 

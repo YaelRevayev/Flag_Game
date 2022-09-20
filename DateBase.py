@@ -52,8 +52,17 @@ def read_to_display(key_num):
             list_of_returned_objects.append(row[column])
     return list_of_returned_objects
 
-print(read_to_display(4))
+import ctypes
 
+
+def memoryad_to_object(hex_ad):
+    return ctypes.cast(hex_ad, ctypes.py_object).value
+
+a=5
+#print("id of a:",id(a))
+#print(memoryad_to_object(id(a)))
+#print("id saved in db- player at state 5 :", read_to_display(5)[0])
+#print(memoryad_to_object(read_to_display(5)[0]).get_i_leftcorner())
 
 
 
